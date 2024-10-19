@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/tgkzz/order/internal/models"
@@ -18,6 +19,10 @@ type orderService struct {
 	logger          *slog.Logger
 	orderRepository repository.IOrderRepository
 }
+
+var (
+	ErrOrderNotFound = errors.New("order not found")
+)
 
 func NewOrderService(logger *slog.Logger, mongoDbUri string) (OrderService, error) {
 	repo, err := repository.NewMongoOrderRepository(context.TODO(), mongoDbUri)
@@ -65,6 +70,9 @@ func (or *orderService) GetOrder(ctx context.Context, id string) (models.Order, 
 	res, err := or.orderRepository.GetOrderById(ctx, id)
 	if err != nil {
 		log.Error("failed to get order", logger.Err(err))
+		if errors.Is(err, repository.ErrNotFound) {
+			return models.Order{}, ErrOrderNotFound
+		}
 		return models.Order{}, err
 	}
 

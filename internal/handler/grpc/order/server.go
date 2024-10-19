@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	order1 "github.com/tgkzz/order/gen/go/order"
@@ -59,6 +60,9 @@ func (s *serverApi) GetOrderById(ctx context.Context, req *order1.GetOrderReques
 
 	res, err := s.orderService.GetOrder(orderCtx, req.OrderId)
 	if err != nil {
+		if errors.Is(err, order.ErrOrderNotFound) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 

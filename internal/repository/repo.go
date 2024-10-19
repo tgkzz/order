@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/tgkzz/order/internal/models"
 	mongoRepo "github.com/tgkzz/order/internal/repository/mongo"
@@ -16,6 +17,10 @@ type IOrderRepository interface {
 }
 
 const OrderCollection = "order"
+
+var (
+	ErrNotFound = errors.New("not found")
+)
 
 func NewMongoOrderRepository(ctx context.Context, uri string) (IOrderRepository, error) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
