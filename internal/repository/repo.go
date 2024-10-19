@@ -18,9 +18,7 @@ type IOrderRepository interface {
 
 const OrderCollection = "order"
 
-var (
-	ErrNotFound = errors.New("not found")
-)
+var ErrNotFound = errors.New("not found")
 
 func NewMongoOrderRepository(ctx context.Context, uri string) (IOrderRepository, error) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)

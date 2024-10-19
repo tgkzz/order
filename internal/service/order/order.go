@@ -20,9 +20,7 @@ type orderService struct {
 	orderRepository repository.IOrderRepository
 }
 
-var (
-	ErrOrderNotFound = errors.New("order not found")
-)
+var ErrOrderNotFound = errors.New("order not found")
 
 func NewOrderService(logger *slog.Logger, mongoDbUri string) (OrderService, error) {
 	repo, err := repository.NewMongoOrderRepository(context.TODO(), mongoDbUri)
