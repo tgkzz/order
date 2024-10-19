@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package order;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "kamal.order.v1;order1";
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrderById(GetOrderRequest) returns (GetOrderResponse);
+  rpc DeleteOrderById(DeleteOrderRequest) returns (google.protobuf.Empty);
+}
+
+message CreateOrderRequest {
+  string username = 1;
+  float totalPrice = 2;
+  repeated CreateOrderItemRequest items = 4;
+}
+
+message CreateOrderItemRequest {
+  string name = 1;
+  float price = 2;
+  string currency = 3;
+}
+
+message CreateOrderResponse {
+  string orderId = 1;
+}
+
+message GetOrderRequest {
+  string orderId = 1;
+}
+
+message GetOrderResponse {
+  string orderId = 1;
+  string username = 2;
+  repeated GetOrderItemRequest items = 3;
+}
+
+message GetOrderItemRequest {
+  string itemId = 1;
+  string name = 2;
+  float price = 3;
+  string currency = 4;
+}
+
+message DeleteOrderRequest {
+  string orderId = 1;
+}
+
