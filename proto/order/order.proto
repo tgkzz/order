@@ -35,7 +35,8 @@ message GetOrderRequest {
 message GetOrderResponse {
   string orderId = 1;
   string username = 2;
-  repeated GetOrderItemRequest items = 3;
+  float price = 3;
+  repeated GetOrderItemRequest items = 4;
 }
 
 message GetOrderItemRequest {
