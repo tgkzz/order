@@ -29,6 +29,12 @@ func main() {
 		logger = pkgLogger.SetupLogger("local")
 	}
 
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Error("Recovered Error after panic", slog.Any("panic", r))
+		}
+	}()
+
 	c := context.Background()
 
 	ctx, stop := signal.NotifyContext(c, os.Interrupt)
