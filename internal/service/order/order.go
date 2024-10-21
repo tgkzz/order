@@ -3,6 +3,7 @@ package order
 import (
 	"context"
 	"errors"
+	repoErrs "github.com/tgkzz/order/internal/repository/erros"
 	"log/slog"
 
 	"github.com/tgkzz/order/internal/models"
@@ -68,7 +69,7 @@ func (or *orderService) GetOrder(ctx context.Context, id string) (models.Order, 
 	res, err := or.orderRepository.GetOrderById(ctx, id)
 	if err != nil {
 		log.Error("failed to get order", logger.Err(err))
-		if errors.Is(err, repository.ErrNotFound) {
+		if errors.Is(err, repoErrs.ErrNotFound) {
 			return models.Order{}, ErrOrderNotFound
 		}
 		return models.Order{}, err

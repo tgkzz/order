@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/tgkzz/order/internal/repository"
+	repoErrs "github.com/tgkzz/order/internal/repository/erros"
 	"go.mongodb.org/mongo-driver/v2/bson"
 
 	"github.com/tgkzz/order/internal/models"
@@ -33,7 +33,7 @@ func (or *OrderRepository) DeleteOrder(ctx context.Context, id string) error {
 	}
 
 	if resp.DeletedCount == 0 {
-		return repository.ErrNotFound
+		return repoErrs.ErrNotFound
 	}
 
 	return nil
@@ -45,7 +45,7 @@ func (or *OrderRepository) GetOrderById(ctx context.Context, id string) (*models
 	var order models.Order
 	if err := or.Coll.FindOne(ctx, filter).Decode(&order); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, repository.ErrNotFound
+			return nil, repoErrs.ErrNotFound
 		}
 		return nil, err
 	}
