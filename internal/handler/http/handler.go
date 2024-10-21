@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 
 	"github.com/tgkzz/order/config"
@@ -22,6 +23,6 @@ func NewHandler(name string, logger *slog.Logger, cfg config.Config) (Handler, e
 	case echo:
 		return echoHandler.NewHttpServer(cfg, logger)
 	default:
-		return nil, nil
+		return nil, errors.New("unknown handler")
 	}
 }
