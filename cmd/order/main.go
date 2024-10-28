@@ -5,7 +5,6 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
-	"time"
 
 	"github.com/tgkzz/order/config"
 	"github.com/tgkzz/order/internal/app"
@@ -54,8 +53,6 @@ func main() {
 	}()
 
 	<-ctx.Done()
-	ctx, cancel := context.WithTimeout(c, 10*time.Second)
-	defer cancel()
 	a.GrpcServer.Stop()
 	if err = a.HttpServer.Stop(ctx); err != nil {
 		panic(err)

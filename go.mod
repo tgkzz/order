@@ -6,6 +6,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/labstack/gommon v0.4.2
+	github.com/tgkzz/storage v0.0.0-20241028120520-7df553490172
 	go.mongodb.org/mongo-driver/v2 v2.0.0-beta2
 	golang.org/x/time v0.5.0
 	google.golang.org/grpc v1.67.1

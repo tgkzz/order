@@ -15,7 +15,7 @@ type App struct {
 }
 
 func New(cfg config.Config, logger *slog.Logger) (*App, error) {
-	orderSrv, err := order.NewOrderService(logger, cfg.Mongo.Uri)
+	orderSrv, err := order.NewOrderService(logger, cfg.Mongo.Uri, cfg.GrpcStorageServer.Host, cfg.GrpcStorageServer.Port)
 	if err != nil {
 		return nil, err
 	}

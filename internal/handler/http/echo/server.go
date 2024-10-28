@@ -23,7 +23,8 @@ type HttpServer struct {
 }
 
 func NewHttpServer(cfg config.Config, logger *slog.Logger) (*HttpServer, error) {
-	orderService, err := order.NewOrderService(logger, cfg.Mongo.Uri)
+	orderService, err := order.NewOrderService(logger,
+		cfg.Mongo.Uri, cfg.GrpcStorageServer.Host, cfg.GrpcStorageServer.Port)
 	if err != nil {
 		return nil, err
 	}

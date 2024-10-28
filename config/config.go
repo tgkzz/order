@@ -7,10 +7,16 @@ import (
 )
 
 type Config struct {
-	Env             string          `json:"env"`
-	HttpOrderServer HttpOrderServer `json:"http_order_server"`
-	GrpcOrderServer GrpcOrderServer `json:"grpc_order"`
-	Mongo           MongoDB         `json:"mongo"`
+	Env               string            `json:"env"`
+	HttpOrderServer   HttpOrderServer   `json:"http_order_server"`
+	GrpcOrderServer   GrpcOrderServer   `json:"grpc_order"`
+	GrpcStorageServer GrpcStorageServer `json:"grpc_storage"`
+	Mongo             MongoDB           `json:"mongo"`
+}
+
+type GrpcStorageServer struct {
+	Host string `json:"host"`
+	Port string `json:"port"`
 }
 
 type HttpOrderServer struct {

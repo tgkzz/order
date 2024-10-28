@@ -3,8 +3,10 @@ package order
 import (
 	"context"
 	"errors"
-	repoErrs "github.com/tgkzz/order/internal/repository/erros"
 	"log/slog"
+
+	repoErrs "github.com/tgkzz/order/internal/repository/erros"
+	"github.com/tgkzz/order/pkg/grpc/storage"
 
 	"github.com/tgkzz/order/internal/models"
 	"github.com/tgkzz/order/internal/repository"
@@ -19,12 +21,18 @@ type OrderService interface {
 type orderService struct {
 	logger          *slog.Logger
 	orderRepository repository.IOrderRepository
+	storageClient   storage.StorageClient
 }
 
 var ErrOrderNotFound = errors.New("order not found")
 
-func NewOrderService(logger *slog.Logger, mongoDbUri string) (OrderService, error) {
+func NewOrderService(logger *slog.Logger, mongoDbUri, storageHost, storagePort string) (OrderService, error) {
 	repo, err := repository.NewMongoOrderRepository(context.TODO(), mongoDbUri)
+	if err != nil {
+		return nil, err
+	}
+
+	storageCli, err := storage.NewStorageClient(storageHost, storagePort, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +40,7 @@ func NewOrderService(logger *slog.Logger, mongoDbUri string) (OrderService, erro
 	return &orderService{
 		logger:          logger,
 		orderRepository: repo,
+		storageClient:   storageCli,
 	}, nil
 }
 
@@ -44,6 +53,10 @@ func (or *orderService) CreateOrder(ctx context.Context, order models.Order) (st
 	)
 
 	// we need to check availability of order
+	if err := or.storageClient.CreateOrder(ctx, order.Username, order.Items); err != nil {
+		log.Error("error while creating order in storage service", slog.String("err", err.Error()))
+		return "", err
+	}
 
 	// also may check how money does user have
 
